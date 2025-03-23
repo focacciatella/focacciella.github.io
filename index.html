@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Focacciella della Fortuna</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Georgia', serif;
+      background: #f7f1e3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .card {
+      background: #fff9f2;
+      border: 2px solid #d4af7f;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 320px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      color: #a05d2d;
+    }
+    canvas {
+      border: 2px dashed #a05d2d;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .message {
+      margin-top: 15px;
+      font-size: 1.2em;
+      color: #444;
+    }
+    .footer {
+      margin-top: 25px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Focacciella della Fortuna</h1>
+    <canvas id="scratch" width="300" height="100"></canvas>
+    <div class="message" id="message">Rasca para descubrir tu premio...</div>
+    <div class="footer">Promoción válida hasta diciembre 2025. Solo 1 premio por persona.</div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('scratch');
+    const ctx = canvas.getContext('2d');
+    const message = document.getElementById('message');
+
+    const prizes = [
+      "Dulce Peccato ??",
+      "Granizado gratis ??",
+      "Cerveza italiana gratis ??",
+      "Botella de vino italiano ??",
+      "Bebida gratis ??",
+      "10% de descuento ??️",
+      "Cena para 2 ??️",
+      "Gracias por participar ??️"
+    ];
+
+    const selectedPrize = prizes[Math.floor(Math.random() * prizes.length)];
+
+    ctx.fillStyle = '#c0c0c0';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = 'destination-out';
+
+    let isDrawing = false;
+
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', () => isDrawing = true);
+    canvas.addEventListener('touchend', () => isDrawing = false);
+    canvas.addEventListener('touchmove', draw);
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || e.touches[0].clientX) - rect.left;
+      const y = (e.clientY || e.touches[0].clientY) - rect.top;
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    canvas.addEventListener('click', () => {
+      message.textContent = `¡Has ganado: ${selectedPrize}!`;
+    });
+  </script>
+</body>
+</html>
